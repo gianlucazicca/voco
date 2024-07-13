@@ -10,30 +10,28 @@
     "postinstall": "nuxt prepare",
     "docker:up": "docker compose -f dev-ops/docker-compose.yml up -d",
     "docker:down": "docker compose -f dev-ops/docker-compose.yml down",
-    "prisma:generate": "npx prisma generate",
-    "prisma:migrate": "npx prisma migrate dev",
-    "prisma:pull": "npx prisma db pull",
-    "prisma:push": "npx prisma db push",
-    "prisma:studio": "npx prisma studio"
-  },
-  "prisma": {
-    "schema": "./src/server/db/prisma/schema.prisma"
+    "db:migrate": "drizzle-kit migrate --config=src/server/db/drizzle.config.ts",
+    "db:generate": "drizzle-kit generate --config=src/server/db/drizzle.config.ts",
+    "db:push": "drizzle-kit push --config=src/server/db/drizzle.config.ts",
+    "db:studio": "drizzle-kit studio --config=src/server/db/drizzle.config.ts"
   },
   "dependencies": {
-    "@prisma/client": "^5.16.1",
     "argon2": "^0.40.3",
+    "drizzle-orm": "^0.31.2",
     "jsonwebtoken": "^9.0.2",
     "nuxt": "^3.12.1",
+    "pg": "^8.12.0",
     "postgres": "^3.4.4",
     "vue": "^3.4.27",
     "vue-router": "^4.3.3",
     "zod": "^3.22.4"
   },
-  "packageManager": "pnpm@9.1.4",
   "devDependencies": {
     "@nuxt/ui": "^2.17.0",
     "@nuxtjs/tailwindcss": "^6.12.0",
-    "prisma": "^5.16.1",
+    "@types/pg": "^8.11.6",
+    "drizzle-kit": "^0.22.8",
     "tailwindcss": "^3.4.4"
-  }
+  },
+  "packageManager": "pnpm@9.1.4"
 }

@@ -24,10 +24,11 @@ const validate = (state: any): FormError[] => {
 
 async function onSubmit (event: FormSubmitEvent<Schema>) {
   console.log(event)
-  const loginUser: FormSubmitEvent<Schema> = await $fetch('/api/auth/login', {
+  const { data } = await useFetch('/api/auth/login', {
     method: 'POST',
     body: event.data
-  })
+  });
+  console.log(data)
 }
 
 async function onError (event: FormErrorEvent) {
@@ -40,7 +41,7 @@ async function onError (event: FormErrorEvent) {
 <template>
   <UForm class="p-6 space-y-6" :schema="schema" :state="state" :validate="validate" @submit="onSubmit" @error="onError">
     <UFormGroup name="email">
-      <UInput v-model="state.email" placeholder="E-mail" />
+      <UInput v-model="state.email" placeholder="E-mail" type="email" />
     </UFormGroup>
 
     <UFormGroup name="password">
