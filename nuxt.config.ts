@@ -3,6 +3,13 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ["@nuxt/ui"],
   srcDir: 'src/',
+  nitro: {
+    esbuild: {
+      options: {
+        target: 'esnext'
+      }
+    }
+  },
   tailwindcss: {
     cssPath: '~~/src/assets/css/main.css',
     configPath: '~~/config/tailwindcss.config.ts',

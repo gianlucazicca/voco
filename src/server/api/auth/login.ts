@@ -1,27 +1,20 @@
-import {db} from "~/server/db/db";
-import {Prisma} from '@prisma/client'
 import { passwordUtils } from "~/server/utils/password.utils";
+import {users} from "~/server/db/schema";
+import { eq } from "drizzle-orm";
 
 export default defineEventHandler(async (event) => {
     const body = await readBody(event);
     try {
-        const res = await db.user.findUnique({
-            where: {
-                email: body.email,
-            },
-            select: {
-                password: true,
-            }
-        });
-        if(res) {
-            const pw = await passwordUtils.verify(res.password, body.password);
-            console.log(pw)
+        const res = await drizzleClient.select({password: users.password}).from(users).where(eq(users.email, body.email))
+        const { password } = res[0];
+        const isValid = await passwordUtils.verify(password, body.password);
+        if(isValid){
+            return await drizzleClient.select().from(users).where(eq(users.email, body.email));
+        } else {
+            throw new Error("Invalid email or password");
         }
     } catch (error) {
-        if(error instanceof Prisma.PrismaClientKnownRequestError) {
-            throw error.message;
-        }
-        else throw error;
+        throw error;
     }
 
 })
